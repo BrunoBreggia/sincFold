@@ -12,99 +12,63 @@ from sincfold import __path__ as sincfold_path
 from sincfold.embeddings import NT_DICT, VOCABULARY
 
 
-CT2DOT_CALL = f"export DATAPATH={sincfold_path[0]}/tools/RNAstructure/data_tables; {sincfold_path[0]}/tools/RNAstructure/ct2dot"
-DRAW_CALL = f"export DATAPATH={sincfold_path[0]}/tools/RNAstructure/data_tables;  {sincfold_path[0]}/tools/RNAstructure/draw -c -u --svg -n 1"
-VARNA_PATH = f"{sincfold_path[0]}/tools/varna/VARNAv3-93.jar"
-if system() == "Windows":
-    VARNA_PATH = ""
-    CT2DOT_CALL = ""
-    DRAW_CALL = ""
-
-# All possible matching brackets for base pairing
-MATCHING_BRACKETS = [
-    ["(", ")"],
-    ["[", "]"],
-    ["{", "}"],
-    ["<", ">"],
-    ["A", "a"],
-    ["B", "a"],
-]
-# Normalization.
-BRACKET_DICT = {"!": "A", "?": "a", "C": "B", "D": "b"}
-
-
-def pair_strength(pair):
-    if "G" in pair and "C" in pair:
-        return 3
-    if "A" in pair and "U" in pair:
-        return 2
-    if "G" in pair and "U" in pair:
-        return 0.8
-
-    if pair[0] in NT_DICT and pair[1] in NT_DICT:
-        n0, n1 = NT_DICT[pair[0]], NT_DICT[pair[1]]
-        # Possible pairs with other bases
-        if ("G" in n0 and "C" in n1) or ("C" in n0 and "G" in n1):
-            return 3
-        if ("A" in n0 and "U" in n1) or ("U" in n0 and "A" in n1):
-            return 2
-        if ("G" in n0 and "U" in n1) or ("U" in n0 and "G" in n1):
-            return 0.8
-
-    return 0
-
-
-def prob_mat(seq):
-    """Receive sequence and compute local conection probabilities (Ufold paper, optimized version)"""
-    Kadd = 30
-    window = 3
-    N = len(seq)
-
-    mat = np.zeros((N, N), dtype=np.float32)
-
-    L = np.arange(N)
-    pairs = np.array(np.meshgrid(L, L)).T.reshape(-1, 2)
-    pairs = pairs[np.abs(pairs[:, 0] - pairs[:, 1]) > window, :]
-
-    for i, j in pairs:
-        coefficient = 0
-        for add in range(Kadd):
-            if (i - add >= 0) and (j + add < N):
-                score = pair_strength((seq[i - add], seq[j + add]))
-                if score == 0:
-                    break
-                else:
-                    coefficient += score * np.exp(-0.5 * (add**2))
-            else:
-                break
-        if coefficient > 0:
-            for add in range(1, Kadd):
-                if (i + add < N) and (j - add >= 0):
-                    score = pair_strength((seq[i + add], seq[j - add]))
-                    if score == 0:
-                        break
-                    else:
-                        coefficient += score * np.exp(-0.5 * (add**2))
-                else:
-                    break
-
-        mat[i, j] = coefficient
-
-    return tr.tensor(mat)
-
-
-def valid_mask(seq):
-    """Create a NxN mask with valid canonic pairings."""
-
-    seq = seq.upper().replace("T", "U")  # rna
-    mask = tr.zeros((len(seq), len(seq)), dtype=tr.float32)
-    for i in range(len(seq)):
-        for j in range(len(seq)):
-            if np.abs(i - j) > 3:  # nt that are too close are invalid
-                if pair_strength([seq[i], seq[j]]) > 0:
-                    mask[i, j] = 1
-                    mask[j, i] = 1
-    return mask
+def unpool_kmer_matrix(contracted_matrix, L, k=3):
+    """Unpool a k-mer level contact matrix back to nucleotide resolution.
+    
+    This function expands a contact matrix of size (L-k+1) x (L-k+1) to the 
+    full nucleotide resolution L x L. Each entry in the contracted matrix 
+    represents interactions between two k-mers, which span k nucleotides each.
+    
+    The expansion uses averaging: each nucleotide position (i, j) in the 
+    expanded matrix receives the average of all contracted matrix entries 
+    whose k-mer ranges cover (i, j).
+    
+    Args:
+        contracted_matrix: Tensor of shape [batch, L_k, L_k] where L_k = L - k + 1
+        L: Original sequence length (nucleotide resolution)
+        k: K-mer size (default 3)
+    
+    Returns:
+        Expanded matrix of shape [batch, L, L]
+    
+    Example:
+        For sequence "AUGC" (L=4) with k=3:
+        - K-mer positions: 0->"AUG", 1->"UGC" (L_k = 2)
+        - contracted[0,1] = interaction between "AUG" and "UGC"
+        - This should fill expanded[0:3, 1:4] (positions 0-2 and 1-3)
+        
+        For overlapping regions, values are averaged.
+    """
+    batch_size = contracted_matrix.shape[0]
+    L_k = contracted_matrix.shape[1]  # contracted length = L - k + 1
+    
+    # Initialize output matrix with zeros
+    expanded = tr.zeros((batch_size, L, L), dtype=contracted_matrix.dtype, 
+                        device=contracted_matrix.device)
+    
+    # Count how many contracted values contribute to each expanded cell
+    # This is used for averaging
+    count_matrix = tr.zeros((batch_size, L, L), dtype=tr.float32, 
+                           device=contracted_matrix.device)
+    
+    # For each contracted position (i, j), map it to the expanded region
+    # Contracted position i corresponds to nucleotide positions [i, i+k)
+    for i in range(L_k):
+        for j in range(L_k):
+            # The k-mer at position i covers nucleotides [i, i+k)
+            # The k-mer at position j covers nucleotides [j, j+k)
+            # The interaction fills the submatrix [i:i+k, j:j+k]
+            i_start, i_end = i, min(i + k, L)
+            j_start, j_end = j, min(j + k, L)
+            
+            expanded[:, i_start:i_end, j_start:j_end] += contracted_matrix[:, i:i+1, j:j+1]
+            count_matrix[:, i_start:i_end, j_start:j_end] += 1.0
+    
+    # Avoid division by zero
+    count_matrix = count_matrix.clamp(min=1.0)
+    expanded = expanded / count_matrix
+    
+    return expanded
 
 
 def normalize_brackets(struct):
