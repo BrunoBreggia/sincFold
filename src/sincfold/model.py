@@ -1,5 +1,5 @@
 from torch import nn
-from torch.nn.functional import cross_entropy, scaled_dot_product_attention
+from torch.nn.functional import cross_entropy, scaled_dot_product_attention, interpolate, pad
 import torch as tr
 from tqdm import tqdm
 import pandas as pd
@@ -223,7 +223,14 @@ class SincFold(nn.Module):
         yT = tr.transpose(y, -1, -2)
         sym = (y + yT) / 2
 
-        expanded = unpool_kmer_matrix(sym, L)
+        # expanded = unpool_kmer_matrix(sym, L)
+        k = 3
+        target_size = sym.shape[-1]*k
+        expanded = interpolate(sym, size=(target_size,)*2, mode='bilinear', align_corners=False)
+        if target_size < L:
+            padding = L-target_size
+            expanded = pad(expanded, (1 ,padding, 1, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
+
         y = self.resnet2d_exp(expanded)
         y = self.conv2Dout(tr.relu(y)).squeeze(1)
 
