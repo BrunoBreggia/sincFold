@@ -1,5 +1,5 @@
 from torch import nn
-from torch.nn.functional import cross_entropy
+from torch.nn.functional import cross_entropy, scaled_dot_product_attention
 import torch as tr
 from tqdm import tqdm
 import pandas as pd
@@ -105,7 +105,7 @@ class SincFold(nn.Module):
         self.use_restrictions = mid_ch != 1
 
         # Reemplazo la convolucion inicial 1D por una capa de Embedding
-        self.embedding = nn.Embedding(65, filters) # vocab_size=65 para 3-mers
+        self.embedding = nn.Embedding(85, filters) # vocab_size=85 para 3-mers
         
         self.resnet1d = [
             #nn.Conv1d(embedding_dim, filters, kernel, padding="same")
@@ -126,7 +126,7 @@ class SincFold(nn.Module):
         # Calculo de Query y Key para matriz de atencion (self-attention w/1 head)
         self.WQ = nn.Linear(filters, 1) # heads=1
         self.WK = nn.Linear(filters, 1) # heads=1
-        self.V = torch.zeros((filters, 1)) # heads=1
+        self.WV = nn.Linear(filters, 1) # heads=1
 
         # Capas para procesamiento 2D comprimido
         self.resnet2d = [nn.Conv2d(
@@ -192,7 +192,8 @@ class SincFold(nn.Module):
     def forward(self, batch):
         x = batch["embedding"].to(self.device)
         batch_size = x.shape[0]
-        L = x.shape[2]
+        Lk = x.shape[2]
+        L = max(batch["length"])
         
         embed = self.embedding(x.squeeze())
         y = self.resnet1d(embed)
@@ -200,20 +201,16 @@ class SincFold(nn.Module):
         # Self-attention
         q = self.WQ(y)
         k = self.WK(y)
-        _, attn_matrix = F.scaled_dot_product_attention(q, k, self.V, need_weights=True)
+        v = self.WV(y)
+        _, attn_matrix = scaled_dot_product_attention(q, k, v, need_weights=True)
 
         transposed = tr.transpose(attn_matrix, -1, -2)
         sym = (attn_matrix + transposed) / 2
 
-        y0 = sym.view(-1, L, L) 
+        y0 = sym.view(-1, Lk, Lk) 
 
-        if self.interaction_prior != "none":
-            prob_mat = batch["interaction_prior"].to(self.device)
-            x1 = tr.zeros([batch_size, 2, L, L]).to(self.device)
-            x1[:, 0, :, :] = y0
-            x1[:, 1, :, :] = prob_mat
-        else:
-            x1 = y0.unsqueeze(1)
+        # Remove all interaction priors
+        x1 = y0.unsqueeze(1)
 
         y = self.resnet2d(x1)
         # output
@@ -222,9 +219,9 @@ class SincFold(nn.Module):
         yT = tr.transpose(y, -1, -2)
         sym = (y + yT) / 2
 
-        expanded = unpool_kmer_matrix(sym)
+        expanded = unpool_kmer_matrix(sym, L)
         y = self.resnet2d_exp(expanded)
-        y = self.self.conv2Dout(tr.relu(y)).squeeze(1)
+        y = self.conv2Dout(tr.relu(y)).squeeze(1)
 
         if batch["canonical_mask"] is not None:
             y = y.multiply(batch["canonical_mask"].to(self.device))

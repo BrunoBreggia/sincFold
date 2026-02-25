@@ -35,29 +35,19 @@ def k3_tokenizer(seq:str) -> tr.Tensor:
 def unpool_kmer_matrix(contracted_matrix, L, k=3):
     """Unpool a k-mer level contact matrix back to nucleotide resolution.
     
-    This function expands a contact matrix of size (L-k+1) x (L-k+1) to the 
+    This function expands a contact matrix of size ceil(L/3) x ceil(L/3) to the 
     full nucleotide resolution L x L. Each entry in the contracted matrix 
     represents interactions between two k-mers, which span k nucleotides each.
     
-    The expansion uses averaging: each nucleotide position (i, j) in the 
-    expanded matrix receives the average of all contracted matrix entries 
-    whose k-mer ranges cover (i, j).
+    The expansion is done by repetition.
     
     Args:
-        contracted_matrix: Tensor of shape [batch, L_k, L_k] where L_k = L - k + 1
+        contracted_matrix: Tensor of shape [batch, L_k, L_k]
         L: Original sequence length (nucleotide resolution)
         k: K-mer size (default 3)
     
     Returns:
         Expanded matrix of shape [batch, L, L]
-    
-    Example:
-        For sequence "AUGC" (L=4) with k=3:
-        - K-mer positions: 0->"AUG", 1->"UGC" (L_k = 2)
-        - contracted[0,1] = interaction between "AUG" and "UGC"
-        - This should fill expanded[0:3, 1:4] (positions 0-2 and 1-3)
-        
-        For overlapping regions, values are averaged.
     """
     batch_size = contracted_matrix.shape[0]
     L_k = contracted_matrix.shape[1]  # contracted length = L - k + 1

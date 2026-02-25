@@ -6,7 +6,7 @@ import json
 import pickle
 from sincfold.embeddings import OneHotEmbedding
 from sincfold.utils import valid_mask, prob_mat, bp2matrix, dot2bp
-from tokenizer import k3_tokenizer
+from sincfold.tokenizer import k3_tokenizer
 
 class SeqDataset(Dataset):
     def __init__(
@@ -139,6 +139,7 @@ def pad_batch(batch):
 
     out_batch = {"contact": contact_pad, 
                  "embedding": embedding_pad, 
+                 "length_k": [b["length_k"] for b in batch],
                  "length": L, 
                  "canonical_mask": canonical_mask_pad,
                  "interaction_prior": interaction_prior_pad,
