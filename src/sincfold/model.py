@@ -7,6 +7,7 @@ import math
 
 from sincfold.metrics import contact_f1
 from sincfold.utils import mat2bp, postprocessing
+from sincfold.tokenizer import unpool_kmer_matrix
 from sincfold._version import __version__
 
 SINCFOLD_WEIGHTS = f'https://github.com/sinc-lab/sincFold/raw/main/weights/sincFold_weights_{__version__}.pmt'
@@ -34,7 +35,7 @@ class SincFold(nn.Module):
     def __init__(
         self,
         train_len=0,
-        embedding_dim=4,
+        embedding_dim=1,
         device="cpu",
         negative_weight=0.1,
         lr=1e-4,
@@ -103,7 +104,12 @@ class SincFold(nn.Module):
 
         self.use_restrictions = mid_ch != 1
 
-        self.resnet1d = [nn.Conv1d(embedding_dim, filters, kernel, padding="same")]
+        # Reemplazo la convolucion inicial 1D por una capa de Embedding
+        self.embedding = nn.Embedding(65, filters) # vocab_size=65 para 3-mers
+        
+        self.resnet1d = [
+            #nn.Conv1d(embedding_dim, filters, kernel, padding="same")
+            ]
 
         for k in range(num_layers):
             self.resnet1d.append(
@@ -117,23 +123,17 @@ class SincFold(nn.Module):
 
         self.resnet1d = nn.Sequential(*self.resnet1d)
 
-        self.convrank1 = nn.Conv1d(
-            in_channels=filters,
-            out_channels=rank,
-            kernel_size=kernel,
-            padding=pad,
-            stride=1,
-        )
-        self.convrank2 = nn.Conv1d(
-            in_channels=filters,
-            out_channels=rank,
-            kernel_size=kernel,
-            padding=pad,
-            stride=1,
-        )
+        # Calculo de Query y Key para matriz de atencion (self-attention w/1 head)
+        self.WQ = nn.Linear(filters, 1) # heads=1
+        self.WK = nn.Linear(filters, 1) # heads=1
+        self.V = torch.zeros((filters, 1)) # heads=1
 
+        # Capas para procesamiento 2D comprimido
         self.resnet2d = [nn.Conv2d(
-            in_channels=mid_ch, out_channels=filters_resnet2d, kernel_size=7, padding="same"
+            in_channels=1, # depends on amount of heads
+            out_channels=filters_resnet2d, 
+            kernel_size=7, 
+            padding="same"
         )]
         self.resnet2d += [
             ResidualBlock2D(
@@ -146,7 +146,7 @@ class SincFold(nn.Module):
                 bottleneck2_resnet2d,
                 kernel_resnet2d,
                 dilation_resnet2d,
-            )
+            ), 
         ]
         
         self.resnet2d = nn.Sequential(*self.resnet2d)
@@ -158,22 +158,54 @@ class SincFold(nn.Module):
             padding="same",
         )
 
+        # Capas para procesamiento 2D expandido
+        self.resnet2d_exp = [nn.Conv2d(
+            in_channels=1, # depends on amount of heads
+            out_channels=filters_resnet2d, 
+            kernel_size=7, 
+            padding="same"
+        )]
+        self.resnet2d_exp += [
+            ResidualBlock2D(
+                filters_resnet2d,
+                bottleneck1_resnet2d,
+                kernel_resnet2d,
+                dilation_resnet2d,
+            ), ResidualBlock2D(
+                filters_resnet2d,
+                bottleneck2_resnet2d,
+                kernel_resnet2d,
+                dilation_resnet2d,
+            ), 
+        ]
+        
+        self.resnet2d_exp = nn.Sequential(*self.resnet2d_exp)
+
+        self.conv2Dout_exp = nn.Conv2d(
+            in_channels=filters_resnet2d,
+            out_channels=1,
+            kernel_size=kernel_resnet2d,
+            padding="same",
+        )
+
+
     def forward(self, batch):
         x = batch["embedding"].to(self.device)
         batch_size = x.shape[0]
         L = x.shape[2]
         
-        y = self.resnet1d(x)
-        ya = self.convrank1(y)
-        ya = tr.transpose(ya, -1, -2)
+        embed = self.embedding(x.squeeze())
+        y = self.resnet1d(embed)
 
-        yb = self.convrank2(y)
+        # Self-attention
+        q = self.WQ(y)
+        k = self.WK(y)
+        _, attn_matrix = F.scaled_dot_product_attention(q, k, self.V, need_weights=True)
 
-        y = ya @ yb
-        yt = tr.transpose(y, -1, -2)
-        y = (y + yt) / 2
+        transposed = tr.transpose(attn_matrix, -1, -2)
+        sym = (attn_matrix + transposed) / 2
 
-        y0 = y.view(-1, L, L) 
+        y0 = sym.view(-1, L, L) 
 
         if self.interaction_prior != "none":
             prob_mat = batch["interaction_prior"].to(self.device)
@@ -186,8 +218,17 @@ class SincFold(nn.Module):
         y = self.resnet2d(x1)
         # output
         y = self.conv2Dout(tr.relu(y)).squeeze(1)
+
+        yT = tr.transpose(y, -1, -2)
+        sym = (y + yT) / 2
+
+        expanded = unpool_kmer_matrix(sym)
+        y = self.resnet2d_exp(expanded)
+        y = self.self.conv2Dout(tr.relu(y)).squeeze(1)
+
         if batch["canonical_mask"] is not None:
             y = y.multiply(batch["canonical_mask"].to(self.device))
+
         yt = tr.transpose(y, -1, -2)
         y = (y + yt) / 2
 
@@ -363,7 +404,12 @@ class ResidualLayer1D(nn.Module):
             ),
             nn.BatchNorm1d(num_bottleneck_units),
             nn.ReLU(),
-            nn.Conv1d(num_bottleneck_units, filters, kernel_size=1, padding="same"),
+            nn.Conv1d(
+                num_bottleneck_units, 
+                filters, 
+                kernel_size=1, 
+                padding="same"
+            ),
         )
 
     def forward(self, x):

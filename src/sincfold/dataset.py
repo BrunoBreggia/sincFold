@@ -6,12 +6,12 @@ import json
 import pickle
 from sincfold.embeddings import OneHotEmbedding
 from sincfold.utils import valid_mask, prob_mat, bp2matrix, dot2bp
+from tokenizer import k3_tokenizer
 
 class SeqDataset(Dataset):
     def __init__(
         self, dataset_path, min_len=0, max_len=512, verbose=False, cache_path=None, for_prediction=False, 
-        interaction_prior="probmat", use_cannonical_mask=False, training=False,
- **kargs):
+        interaction_prior="probmat", use_cannonical_mask=False, training=False, **kargs):
         """
         interaction_prior: none, probmat
         """
@@ -58,8 +58,8 @@ class SeqDataset(Dataset):
 
         self.sequences = data.sequence.tolist()
         self.ids = data.id.tolist()
-        self.embedding = OneHotEmbedding()
-        self.embedding_size = self.embedding.emb_size
+        self.embedding = k3_tokenizer
+        self.embedding_size = 1 # embedding size set to 1 because of tokenization
         self.interaction_prior = interaction_prior
         self.use_cannonical_mask = use_cannonical_mask
 
@@ -84,7 +84,7 @@ class SeqDataset(Dataset):
             if self.base_pairs is not None:
                 Mc = bp2matrix(L, self.base_pairs[idx])
 
-            seq_emb = self.embedding.seq2emb(sequence)
+            seq_emb = self.embedding(sequence)
 
             mask = None
             if self.use_cannonical_mask:
@@ -92,8 +92,15 @@ class SeqDataset(Dataset):
             interaction_prior = None
             if self.interaction_prior == "probmat":
                 interaction_prior = prob_mat(sequence)
-            item = {"embedding": seq_emb, "contact": Mc, "length": L, "canonical_mask": mask,
-                    "id": seqid, "sequence": sequence, "interaction_prior": interaction_prior} 
+            item = {"embedding": seq_emb, 
+                    "length_k": len(seq_emb),
+                    "contact": Mc, 
+                    "length": L, 
+                    "canonical_mask": mask,
+                    "id": seqid, 
+                    "sequence": sequence, 
+                    "interaction_prior": interaction_prior
+                    } 
 
             if self.cache is not None:
                 pickle.dump(item, open(cache, "wb"))
@@ -104,7 +111,8 @@ def pad_batch(batch):
     """batch is a dictionary with different variables lists"""
     
     L = [b["length"] for b in batch]
-    embedding_pad = tr.zeros((len(batch), batch[0]["embedding"].shape[0], max(L)))
+    Lk = [b["length_k"] for b in batch]
+    embedding_pad = tr.zeros((len(batch), 1, max(Lk)))
     if batch[0]["contact"] is None:
         contact_pad = None
     else:
@@ -120,7 +128,7 @@ def pad_batch(batch):
         interaction_prior_pad = tr.zeros((len(batch), max(L), max(L)))
 
     for k in range(len(batch)):
-        embedding_pad[k, :, : L[k]] = batch[k]["embedding"]
+        embedding_pad[k, :, : Lk[k]] = batch[k]["embedding"]
         if contact_pad is not None:
             contact_pad[k, : L[k], : L[k]] = batch[k]["contact"]
         if canonical_mask_pad is not None:
