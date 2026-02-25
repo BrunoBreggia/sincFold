@@ -7,7 +7,6 @@ import math
 
 from sincfold.metrics import contact_f1
 from sincfold.utils import mat2bp, postprocessing
-from sincfold.tokenizer import unpool_kmer_matrix
 from sincfold._version import __version__
 
 SINCFOLD_WEIGHTS = f'https://github.com/sinc-lab/sincFold/raw/main/weights/sincFold_weights_{__version__}.pmt'
@@ -124,9 +123,10 @@ class SincFold(nn.Module):
         self.resnet1d = nn.Sequential(*self.resnet1d)
 
         # Calculo de Query y Key para matriz de atencion (self-attention w/1 head)
-        self.WQ = nn.Linear(filters, 1) # heads=1
-        self.WK = nn.Linear(filters, 1) # heads=1
-        self.WV = nn.Linear(filters, 1) # heads=1
+        self.multiHead = nn.MultiheadAttention(filters, num_heads=1)
+        self.WQ = nn.Linear(filters, filters) # heads=1
+        self.WK = nn.Linear(filters, filters) # heads=1
+        self.WV = nn.Linear(filters, filters) # heads=1
 
         # Capas para procesamiento 2D comprimido
         self.resnet2d = [nn.Conv2d(
@@ -196,37 +196,40 @@ class SincFold(nn.Module):
         L = max(batch["length"])
         
         print("Tensor shape:", x.shape)
-        embed = self.embedding(x.int())
-        embed = embed.transpose(1, 2)
-        print("Tensor shape:", embed.shape)
-        y = self.resnet1d(embed)
+        y = self.embedding(x.int())
+        #y = y.transpose(1, 2)
+        print("Tensor shape:", y.shape)
+        #y = self.resnet1d(y)
         print("Tensor shape:", y.shape)
 
         # Self-attention
         q = self.WQ(y)
         k = self.WK(y)
         v = self.WV(y)
-        _, attn_matrix = scaled_dot_product_attention(q, k, v, need_weights=True)
+        _, attn_matrix = self.multiHead(q, k, v)
+        # _, attn_matrix = scaled_dot_product_attention(q, k, v, need_weights=True)
+        print(attn_matrix.shape)
 
-        transposed = tr.transpose(attn_matrix, -1, -2)
-        sym = (attn_matrix + transposed) / 2
+        y0 = tr.unsqueeze(attn_matrix, dim=1)
+        #transposed = tr.transpose(attn_matrix, -1, -2)
+        #y = (attn_matrix + transposed) / 2
 
-        y0 = sym.view(-1, Lk, Lk) 
+        # y0 = sym.view(-1, Lk, Lk) 
 
-        # Remove all interaction priors
-        x1 = y0.unsqueeze(1)
+        # # Remove all interaction priors
+        # x1 = y0.unsqueeze(1)
 
-        y = self.resnet2d(x1)
+        # y = self.resnet2d(y0)
         # output
-        y = self.conv2Dout(tr.relu(y)).squeeze(1)
+        # y = self.conv2Dout(tr.relu(y)).squeeze(1)
 
-        yT = tr.transpose(y, -1, -2)
-        sym = (y + yT) / 2
+        # yT = tr.transpose(y, -1, -2)
+        # sym = (y + yT) / 2
 
         # expanded = unpool_kmer_matrix(sym, L)
         k = 3
-        target_size = sym.shape[-1]*k
-        expanded = interpolate(sym, size=(target_size,)*2, mode='bilinear', align_corners=False)
+        target_size = y0.shape[-1]*k
+        expanded = interpolate(y0, size=(target_size,)*2, mode='bilinear', align_corners=False)
         if target_size < L:
             padding = L-target_size
             expanded = pad(expanded, (1 ,padding, 1, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
