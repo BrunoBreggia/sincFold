@@ -112,7 +112,7 @@ def pad_batch(batch):
     
     L = [b["length"] for b in batch]
     Lk = [b["length_k"] for b in batch]
-    embedding_pad = tr.zeros((len(batch), 1, max(Lk)))
+    embedding_pad = tr.zeros((len(batch), max(Lk)), dtype=tr.int16)
     if batch[0]["contact"] is None:
         contact_pad = None
     else:
@@ -128,7 +128,7 @@ def pad_batch(batch):
         interaction_prior_pad = tr.zeros((len(batch), max(L), max(L)))
 
     for k in range(len(batch)):
-        embedding_pad[k, :, : Lk[k]] = batch[k]["embedding"]
+        embedding_pad[k, : Lk[k]] = batch[k]["embedding"]
         if contact_pad is not None:
             contact_pad[k, : L[k], : L[k]] = batch[k]["contact"]
         if canonical_mask_pad is not None:

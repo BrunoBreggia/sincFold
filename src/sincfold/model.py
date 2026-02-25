@@ -192,11 +192,15 @@ class SincFold(nn.Module):
     def forward(self, batch):
         x = batch["embedding"].to(self.device)
         batch_size = x.shape[0]
-        Lk = x.shape[2]
+        Lk = x.shape[1]
         L = max(batch["length"])
         
-        embed = self.embedding(x.squeeze())
+        print("Tensor shape:", x.shape)
+        embed = self.embedding(x.int())
+        embed = embed.transpose(1, 2)
+        print("Tensor shape:", embed.shape)
         y = self.resnet1d(embed)
+        print("Tensor shape:", y.shape)
 
         # Self-attention
         q = self.WQ(y)
