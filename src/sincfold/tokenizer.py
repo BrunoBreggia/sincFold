@@ -5,11 +5,9 @@ from itertools import product
 # This order matters!
 VOCABULARY = ["A", "C", "G", "U"]
 
-KMERVOCAB = [""]  # 1 token
-KMERVOCAB += VOCABULARY[:]  # 4 tokens
-KMERVOCAB += ["".join(p) for p in product(VOCABULARY, repeat=2)]  # 16 tokens
+KMERVOCAB = [""]
 KMERVOCAB += ["".join(p) for p in product(VOCABULARY, repeat=3)]  # 64 tokens
-# Total of 85 elements in 3-mer vocabulary
+# Total of 64 elements in 3-mer vocabulary
 
 
 def k3_tokenizer(seq:str) -> tr.Tensor:
@@ -18,10 +16,10 @@ def k3_tokenizer(seq:str) -> tr.Tensor:
     returns a sequence of IDs (int) of length L_3 that corresponds
     to the 3-mers of the original sequence.
 
-    Tokenized length is ceil(L/3).
+    Tokenized length is floor(L/3).
     """
     k=3
-    num_tokens = int(math.ceil(len(seq)/3))
+    num_tokens = len(seq)//3
     tokens = tr.zeros(num_tokens, dtype=tr.int16)
 
     for i in range(num_tokens):
