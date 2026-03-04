@@ -123,10 +123,10 @@ class SincFold(nn.Module):
         self.resnet1d = nn.Sequential(*self.resnet1d)
 
         # Calculo de Query y Key para matriz de atencion (self-attention w/1 head)
-        self.multiHead = nn.MultiheadAttention(filters, num_heads=1)
         self.WQ = nn.Linear(filters, filters) # heads=1
         self.WK = nn.Linear(filters, filters) # heads=1
         self.WV = nn.Linear(filters, filters) # heads=1
+        self.multiHead = nn.MultiheadAttention(filters, num_heads=1, batch_first=True)
 
         # Capas para procesamiento 2D comprimido
         self.resnet2d = [nn.Conv2d(
@@ -194,12 +194,11 @@ class SincFold(nn.Module):
         batch_size = x.shape[0]
         Lk = x.shape[1]
         L = max(batch["length"])
+        print("Original length:", L)
         
         print("Tensor shape:", x.shape)
         y = self.embedding(x.int())
         #y = y.transpose(1, 2)
-        print("Tensor shape:", y.shape)
-        #y = self.resnet1d(y)
         print("Tensor shape:", y.shape)
 
         # Self-attention
@@ -208,37 +207,29 @@ class SincFold(nn.Module):
         v = self.WV(y)
         _, attn_matrix = self.multiHead(q, k, v)
         # _, attn_matrix = scaled_dot_product_attention(q, k, v, need_weights=True)
-        print(attn_matrix.shape)
+        print("Attention matrix", attn_matrix.shape)
 
         y0 = tr.unsqueeze(attn_matrix, dim=1)
-        #transposed = tr.transpose(attn_matrix, -1, -2)
-        #y = (attn_matrix + transposed) / 2
-
-        # y0 = sym.view(-1, Lk, Lk) 
-
-        # # Remove all interaction priors
-        # x1 = y0.unsqueeze(1)
-
-        # y = self.resnet2d(y0)
-        # output
-        # y = self.conv2Dout(tr.relu(y)).squeeze(1)
-
-        # yT = tr.transpose(y, -1, -2)
-        # sym = (y + yT) / 2
+        print(y0.shape)
 
         # expanded = unpool_kmer_matrix(sym, L)
         k = 3
         target_size = y0.shape[-1]*k
-        expanded = interpolate(y0, size=(target_size,)*2, mode='bilinear', align_corners=False)
+        # new_shape = list(y0.shape)
+        # new_shape[2:] = target_size, target_size
+        expanded = interpolate(y0, size=(target_size,)*2, mode='nearest')
+        print("Interpolated shape:", expanded.shape)
         if target_size < L:
             padding = L-target_size
             expanded = pad(expanded, (1 ,padding, 1, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
+        print("Padded shape:", expanded.shape)
 
         y = self.resnet2d_exp(expanded)
         y = self.conv2Dout(tr.relu(y)).squeeze(1)
+        print("Convolved shape:", y.shape)
 
-        if batch["canonical_mask"] is not None:
-            y = y.multiply(batch["canonical_mask"].to(self.device))
+        # if batch["canonical_mask"] is not None:
+        #     y = y.multiply(batch["canonical_mask"].to(self.device))
 
         yt = tr.transpose(y, -1, -2)
         y = (y + yt) / 2
@@ -263,14 +254,19 @@ class SincFold(nn.Module):
         
         y0 = y0.unsqueeze(1)
         y0 = tr.cat((-y0, y0), dim=1)
-        error_loss1 = cross_entropy(y0, y, ignore_index=-1, weight=self.class_weight)
+
+        print("---------------------------------")
+        print(y0.shape)
+        print(y.shape)
+
+        #error_loss1 = cross_entropy(y0, y, ignore_index=-1, weight=self.class_weight)
         
         error_loss = cross_entropy(yhat, y, ignore_index=-1, weight=self.class_weight)
     
 
         loss = (
             error_loss
-            + self.loss_beta * error_loss1
+            # + self.loss_beta * error_loss1
             + self.loss_l1 * l1_loss
         )
         return loss
