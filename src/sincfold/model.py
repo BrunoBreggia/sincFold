@@ -221,7 +221,7 @@ class SincFold(nn.Module):
         print("Interpolated shape:", expanded.shape)
         if target_size < L:
             padding = L-target_size
-            expanded = pad(expanded, (1 ,padding, 1, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
+            expanded = pad(expanded, (0 ,padding, 0, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
         print("Padded shape:", expanded.shape)
 
         y = self.resnet2d_exp(expanded)
