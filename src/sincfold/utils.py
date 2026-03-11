@@ -155,6 +155,13 @@ def dot2bp(struc):
                 return False
     return list(sorted(bp))
 
+def bp2dot(base_pairs, length):
+    """Convert base pairs to dotbracket notation. Base pairs should be 1-based."""
+    dot = ["." for _ in range(length)]
+    for bp in base_pairs:
+        dot[bp[0] - 1] = "("
+        dot[bp[1] - 1] = ")"
+    return "".join(dot)
 
 def dot2matrix(dot):
     matrix = tr.zeros((len(dot), len(dot)))
