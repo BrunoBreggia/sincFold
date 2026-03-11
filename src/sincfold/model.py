@@ -194,42 +194,44 @@ class SincFold(nn.Module):
         batch_size = x.shape[0]
         Lk = x.shape[1]
         L = max(batch["length"])
-        print("Original length:", L)
+        # print("Original length:", L)
         
-        print("Tensor shape:", x.shape)
+        # print("Tensor shape:", x.shape)
         y = self.embedding(x.int())
-        #y = y.transpose(1, 2)
-        print("Tensor shape:", y.shape)
+        # print("Tensor shape:", y.shape)
 
         # Self-attention
         q = self.WQ(y)
         k = self.WK(y)
         v = self.WV(y)
         _, attn_matrix = self.multiHead(q, k, v)
-        # _, attn_matrix = scaled_dot_product_attention(q, k, v, need_weights=True)
-        print("Attention matrix", attn_matrix.shape)
+        # print("Attention matrix", attn_matrix.shape)
 
         y0 = tr.unsqueeze(attn_matrix, dim=1)
-        print(y0.shape)
+        # print(y0.shape)
 
-        # expanded = unpool_kmer_matrix(sym, L)
         k = 3
         target_size = y0.shape[-1]*k
-        # new_shape = list(y0.shape)
-        # new_shape[2:] = target_size, target_size
+        # if in inference mode, save matrix to middle_matrix/ folder as compressed.csv
+        if not self.training:
+            import os
+            os.makedirs("middle_matrix", exist_ok=True)
+            tr.save(y0.cpu(), f"middle_matrix/compressed_{batch['id'][0]}.pt")
+        
         expanded = interpolate(y0, size=(target_size,)*2, mode='nearest')
-        print("Interpolated shape:", expanded.shape)
+        # print("Interpolated shape:", expanded.shape)
         if target_size < L:
             padding = L-target_size
             expanded = pad(expanded, (0 ,padding, 0, padding), mode="constant", value=0)  # padding -> (left, right, top, bottom)
-        print("Padded shape:", expanded.shape)
+        # print("Padded shape:", expanded.shape)
+        
+        # if in inference mode, save expanded matrix to middle_matrix/ folder as expanded.csv
+        if not self.training:
+            tr.save(expanded.cpu(), f"middle_matrix/expanded_{batch['id'][0]}.pt")
 
         y = self.resnet2d_exp(expanded)
         y = self.conv2Dout(tr.relu(y)).squeeze(1)
-        print("Convolved shape:", y.shape)
-
-        # if batch["canonical_mask"] is not None:
-        #     y = y.multiply(batch["canonical_mask"].to(self.device))
+        # print("Convolved shape:", y.shape)
 
         yt = tr.transpose(y, -1, -2)
         y = (y + yt) / 2
@@ -255,9 +257,9 @@ class SincFold(nn.Module):
         y0 = y0.unsqueeze(1)
         y0 = tr.cat((-y0, y0), dim=1)
 
-        print("---------------------------------")
-        print(y0.shape)
-        print(y.shape)
+        # print("---------------------------------")
+        # print(y0.shape)
+        # print(y.shape)
 
         #error_loss1 = cross_entropy(y0, y, ignore_index=-1, weight=self.class_weight)
         

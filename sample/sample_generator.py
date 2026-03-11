@@ -64,26 +64,64 @@ def random_rna_tree():
         tree.append((stem, subtree))
     
         num2 = np.random.randint(5,20)
-        if num2 < 10:
+        if num2 <= 10:
             tree.append(num2)
     return tree
 
-def create_mock_file(filename):
+def random_rna_tree_tandem(n=3):
+    """
+    Generates random RNA trees by tandems of 3 nucleotides
+    """
+    tree = []
+
+    num = np.random.randint(3,8)
+    if num <= 3:
+        tree.append(num*n)
+    else:
+        num2 = np.random.randint(2,6)
+        if num2 <= 3:
+            tree.append(num2*n)
+
+        stem = np.random.randint(1,2)
+        subtree = random_rna_tree_tandem(n)
+        tree.append((stem*n, subtree))
+    
+        num2 = np.random.randint(2,6)
+        if num2 <= 3:
+            tree.append(num2*n)
+    return tree
+
+def create_mock_training_file(filename):
     with open(filename, 'w') as samples_file:
         print("id,sequence,base_pairs", file=samples_file, flush=True)
 
         for i in range(200):
-            id, seq, pairs_array = rna_generator([f'prueba{i}', random_rna_tree()])
+            id, seq, pairs_array = rna_generator([f'prueba{i}', random_rna_tree_tandem(n=3)])
             if len(seq) < 300 and len(pairs_array) > 0:
                 print(id, seq, f'"{pairs_array}"', sep=',', file=samples_file, flush=True)
 
+def create_mock_evaluation_file(filename):
+    with open(filename, 'w') as samples_file:
+        # FASTA file
+        for i in range(100):
+            id, seq, pairs_array = rna_generator([f'prueba{i}', random_rna_tree_tandem(n=3)])
+            if len(seq) < 300 and len(pairs_array) > 0:
+                print(">", id, file=samples_file, flush=True)
+                print(seq, file=samples_file, flush=True)
+                print(bp2dot(pairs_array, len(seq)), file=samples_file, flush=True)
+
+
 
 if __name__ == '__main__':
-    # create_mock_file("sample/train_mock.csv")
-    seq_id, seq, pairs_list = rna_generator(["prueba", random_rna_tree()])
-    print(seq_id)
-    print(seq)
-    print(pairs_list)
-    dot = bp2dot(pairs_list, len(seq))
-    print(dot)
+    # create_mock_training_file("sample/train_mock_k3.csv")
+    create_mock_evaluation_file("sample/test_mock_k3.fasta")
+
+    # random_rna = random_rna_tree_tandem(3)
+    # print(random_rna)
+    # seq_id, seq, pairs_list = rna_generator(["prueba", random_rna])
+    # print(seq_id)
+    # print(seq)
+    # print(pairs_list)
+    # dot = bp2dot(pairs_list, len(seq))
+    # print(dot)
     
