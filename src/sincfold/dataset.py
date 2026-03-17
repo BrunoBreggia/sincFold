@@ -137,13 +137,13 @@ def pad_batch(batch):
         if interaction_prior_pad is not None:
             interaction_prior_pad[k, : L[k], : L[k]] = batch[k]["interaction_prior"]
 
-    out_batch = {"contact": contact_pad, 
-                 "embedding": embedding_pad, 
-                 "length_k": [b["length_k"] for b in batch],
-                 "length": L, 
-                 "canonical_mask": canonical_mask_pad,
-                 "interaction_prior": interaction_prior_pad,
-                 "sequence": [b["sequence"] for b in batch],
-                 "id": [b["id"] for b in batch]}
+    out_batch = {"contact": (contact_pad), 
+                 "embedding": (embedding_pad), 
+                 "length_k": ([b["length_k"] for b in batch]),
+                 "length": (L), 
+                 "canonical_mask": (canonical_mask_pad),
+                 "interaction_prior": (interaction_prior_pad),
+                 "sequence": ([b["sequence"] for b in batch]),
+                 "id": ([b["id"] for b in batch])}
     
     return out_batch

@@ -4,6 +4,7 @@ import torch as tr
 from tqdm import tqdm
 import pandas as pd
 import math
+import numpy as np
 
 from sincfold.metrics import contact_f1
 from sincfold.utils import mat2bp, postprocessing
@@ -213,10 +214,11 @@ class SincFold(nn.Module):
         k = 3
         target_size = y0.shape[-1]*k
         # if in inference mode, save matrix to middle_matrix/ folder as compressed.csv
-        if not self.training:
+        if not self.training and len(batch['id']) == 1:
             import os
             os.makedirs("middle_matrix", exist_ok=True)
-            tr.save(y0.cpu(), f"middle_matrix/compressed_{batch['id'][0]}.pt")
+            np_matrix = np.squeeze(y0.detach().cpu().numpy())
+            np.savetxt(f"middle_matrix/compressed_{batch['id'][0]}.csv", np_matrix, delimiter=',')
         
         expanded = interpolate(y0, size=(target_size,)*2, mode='nearest')
         # print("Interpolated shape:", expanded.shape)
@@ -226,8 +228,9 @@ class SincFold(nn.Module):
         # print("Padded shape:", expanded.shape)
         
         # if in inference mode, save expanded matrix to middle_matrix/ folder as expanded.csv
-        if not self.training:
-            tr.save(expanded.cpu(), f"middle_matrix/expanded_{batch['id'][0]}.pt")
+        if not self.training and len(batch['id']) == 1:
+            np_matrix = np.squeeze(expanded.detach().cpu().numpy())
+            np.savetxt(f"middle_matrix/expanded_{batch['id'][0]}.csv", np_matrix, delimiter=',')
 
         y = self.resnet2d_exp(expanded)
         y = self.conv2Dout(tr.relu(y)).squeeze(1)
@@ -235,6 +238,10 @@ class SincFold(nn.Module):
 
         yt = tr.transpose(y, -1, -2)
         y = (y + yt) / 2
+
+        if not self.training and len(batch['id']) == 1:
+            np_matrix = np.squeeze(y.detach().cpu().numpy())
+            np.savetxt(f"middle_matrix/prefinal_{batch['id'][0]}.csv", np_matrix, delimiter=',')
 
         return y, y0
 
@@ -318,7 +325,7 @@ class SincFold(nn.Module):
             loader = tqdm(loader)
 
         with tr.no_grad():
-            for batch in loader:  
+            for batch in loader:
                 y = batch["contact"].to(self.device)
                 batch.pop("contact")
                 lengths = batch["length"]
@@ -332,6 +339,10 @@ class SincFold(nn.Module):
                     y_pred = y_pred[0]
 
                 y_pred_post = postprocessing(y_pred.cpu(), batch["canonical_mask"])
+
+                if not self.training and len(batch['id']) == 1:
+                    np_matrix = np.squeeze(y_pred_post.detach().cpu().numpy())
+                    np.savetxt(f"middle_matrix/final_{batch['id'][0]}.csv", np_matrix, delimiter=',')
 
                 f1 = contact_f1(y.cpu(), y_pred.cpu(), lengths, th=self.output_th, reduce=True, method="triangular")
                 f1_post = contact_f1(

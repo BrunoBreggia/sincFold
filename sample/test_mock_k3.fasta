@@ -1,249 +1,300 @@
 > prueba0
-GUUCCGAUGGGCGGGGUGCUUGCCCCGGUC
-.........(((.........)))......
+GCGGUAUGCAGAACUUACCGC
+((((((.........))))))
 > prueba1
-UCUCUAUUGUUAAAUGCUACGAUUGGGAGCAUUCUUGGCGCUUAGAGAUCCCGC
-((((((......((((((.........)))))).........))))))......
+UAUGAUUUACCGGGAAUCAUA
+((((((.........))))))
 > prueba2
-AAGUUUACGUCUCUU
-(((.........)))
+GUAUCAUGCCAAUUAUGAUAC
+((((((.........))))))
 > prueba3
-CUGGACUAGGCACUACCGAUAAUACGCCGAUCAUUAGCGAACUCUCGGAACAUGGUCUGAAUCCAUCAG
-((((((.........(((......(((.........)))......)))......))).........)))
+CAAACCUAUCUCGUGGGUUUG
+((((((.........))))))
+> prueba4
+UUUCCUAUCAUCCCAAGGAAA
+((((((.........))))))
+> prueba5
+GUAAAGCGAUCGGGUCUUUAC
+((((((.........))))))
 > prueba6
-AAUGGGCUUAGAGCGCCAUCUGACAGCGAAGUCAUCUGUUGCGAUCAACUUAACAGGUCUCGCGUUCGUCACGCAACACUAGGCACCGCUGUCUCUAUU
-(((......(((.........((((((.........((((((.........(((.........)))......)))))).........))))))))))))
+AAAAGAGGUCCUGAAUCUUUU
+((((((.........))))))
 > prueba7
-GGCCCUCGGAAGGCCUAUCAU
-(((.........)))......
+GUAGGAGGAAACGCCUCCUAC
+((((((.........))))))
 > prueba8
-CCGUUGCGAUUCCUCAGUAUGUGAUGGAAUUCACGUCCAGAAAGUGAGGAA
-.........((((((.........(((.........)))......))))))
+GCACUUAUGUACGCAAAGUGC
+((((((.........))))))
 > prueba9
-AUCGGUAGUGUGCUCUUAUACGGGAUGAAUAGGAGACCAGCGCCUGACCUGAUUGUAUAAACACGCGAGCAC
-.........((((((((((((.........(((.........))).........))))))......))))))
+ACGAUAGUGGGGGUGUAUCGU
+((((((.........))))))
 > prueba10
-ACCGCAUAAACUUUGAAAAAGGUCUCGAACCCUAUUCGAUUUCCGACUAUAUUAUGCGGU
-(((((((((......(((......(((.........)))))).........)))))))))
+UCGUGUUGCGUACUGACACGA
+((((((.........))))))
 > prueba11
-AGGAGGGGGCCCUUAUGGUAGCUGGGUGAAAUACUUCCUUUAUAUAUAGCCCGAUUCACCUAAGGGCCC
-......(((((((((.........(((((((((.........))).........)))))))))))))))
+GGAAACUUAGACAGCGUUUCC
+((((((.........))))))
 > prueba12
-AAUUAGAUCCAGAGCGUUGAU
-......(((.........)))
+CGGAUUACUUCACAGAAUCCG
+((((((.........))))))
 > prueba13
-CUCUCACGUUGUUUACAAACGCAGACAACUAAGCGAUGCUGUACUGGUUCGGCACGAUGUCGAGCAAACGCAUAGUCGUCAUGGUACUGUCUGACACAUGCGGGC
-.........(((.........((((((......((((((.........(((.........)))))).........))).........))))))))).........
+UCCGAUCCCAAGAGGAUCGGA
+((((((.........))))))
 > prueba14
-UAAGGGACAAUAAUUAAGGUUAAUUUACACCGUGGCCUAGCUACGGCCAUUAGCCGAUAACUGUUUUAAAAUUUGACUUAUUUA
-(((......((((((.........(((......(((.........))).........))).........)))......))))))
+UUGAGAGUGGUUACAUCUCAA
+((((((.........))))))
 > prueba15
-CAUCGGUACUCCACUAGCUCUGGUGGGUGAUCCAUCCCUCAGAAUGUUCGACACACUCAAUAAGCCUUACCUUAGGUAGGCUGAGUAAAAUGCCCGGCCAUAAGGUCUUUUGCUAAGUCAGCGUAUUAUUGACCAGUGCUUAGAGGUCCAAUCCGGGCAUUUUACAUACAGUACCUAACAAGCUAAAGUGGCCGGGGAGUGUCGAACCUUGCAACUAUUCGCCGUGCCGGAAGAGGAGUUGUA
-......(((.........(((.........(((.........(((((((((((((((.........(((......(((......((((((((((((.........(((......((((((.........)))......)))))).........))))))))))))......))).........)))))).........))))))))).........))).........))))))......)))
+GACUUUUGGAUCUAUAAAGUC
+((((((.........))))))
+> prueba16
+GCCAUGAACGUACUUCAUGGC
+((((((.........))))))
 > prueba17
-CGUUUCACAGCACGCACGAUCAGCCUCAGGUCUAUGCAUGGCAGAGCUACUAAAUAUGCGUAGGAGAGUACGGGGUGA
-(((.........(((......(((......(((.........)))))).........))).........)))......
+UUAACAAAUACAGAUUGUUAA
+((((((.........))))))
 > prueba18
-AAGGCACGGACACGAGAAGUUUUGACCAAGAGGCAAGUUACAUCGUGU
-.........((((((......(((.........)))......))))))
+GAGAUUUAUUUACCUAAUCUC
+((((((.........))))))
 > prueba19
-UUCCGCCUGAACCCAAUCGGGCUGUGUCGCAGCAAAACGUGACCAGGAGGGUGGUGUGUCAGUAUUGCAUCACAUGCCACCGCUAUGCAACCUGGGACUGACCCCCGUUUCUUGUUUAGCCAGGCUACACAGGUUCAG
-......((((((.........((((((......((((((.........(((......((((((.........(((.........))).........))))))))))))......))).........))))))))))))
+UACAACCGGACUGCGGUUGUA
+((((((.........))))))
+> prueba20
+AUUACAGUACGAACUUGUAAU
+((((((.........))))))
 > prueba21
-CGGUUAGCGUCCGCGCGGUCACCGCGGUGGUCUCUCUUGCCACCUAAAUGACCGUAAUCCAUCAUACCGAGAUCUCUA
-((((((.........((((((......(((.........)))......))))))))).........))).........
+CGUCUCGCUGGGUGCGAGACG
+((((((.........))))))
 > prueba22
-CUCUGGGGCCCCAAUUGGCGUGGG
-.........(((.........)))
+UUCUCCCAGCCUUCGGGAGAA
+((((((.........))))))
 > prueba23
-AUCAGAGAAGUGAGCAUAGUCCACCGGCUCUCA
-.........(((.........))).........
+UCUUGUCGGGAUACAACAAGA
+((((((.........))))))
 > prueba24
-GACAUAACUAGAGUCGUUUGU
-(((.........)))......
+CCCGUUAAGGGACAAAACGGG
+((((((.........))))))
+> prueba25
+CAGUUUCACCCGAGGAAACUG
+((((((.........))))))
 > prueba26
-UGUCGAUGAAAUAACAAAUCACGCAGU
-......(((.........)))......
+AGCCGGAACUUCGCUCCGGCU
+((((((.........))))))
 > prueba27
-UUGAGUCGCGGGAAGAAAAUAGGUGCCACGUACAUAAGCUGGCGGAAAGUCCUAGACUUUAACUACCACCCGCCGAUAAUACCAGCUCUCCGUGGCUAUUUUUUUGCGCCCAUUGCAACUCGCCGGCCGCAAUCACUCGAG
-(((((((((......(((......(((.........((((((((((((.........))).........))).........))))))......)))......)))))).........))).........))).........
+AUACGUGGUUACCUGACGUAU
+((((((.........))))))
 > prueba28
-UUCUCAAGUGUGGAAGAUACUGAU
-(((.........))).........
+UGCCGACGCUCAUUCUCGGCA
+((((((.........))))))
 > prueba29
-AGGCUAGGAGAGACGCGUAGAGUACAUGAGUGCGUUCCCUGUUCUUUCCACUUACAAGGAGUGACAGCAUCUUCCUAGCCU
-(((((((((.........(((.........(((......(((......(((.........)))))))))))))))))))))
+CGUAUAAGCUGUAGCUAUACG
+((((((.........))))))
 > prueba30
-GAGAUGAAUAUUCUAGAGUGCGAUAACCCUGCAAGGCUUAGGACGGAGAUGGCUUAUUACUUUUGUAAAUCACAAACGGCCGAAUUCGAUAUUCGACGCGGUGUACCACAUAAUGACUGGCAAAAGGUUUCGCCCCUCCCGAAUUUCGUCGGCGGCCCUAUCUUCCGUUUUACAAAAAGCCAUAAGGGCUACCCAAGGGUUAUCGCCCAUGUGGCAUGCUUCGCGAAUCGGGAAAUUCAUCUCCACUAACUC
-((((((((((((......((((((((((((......(((.........((((((......(((((((((......(((((((((......((((((.........(((.........))).........))).........))))))......))).........))))))))))))))))))))).........))))))))).........))).........)))......))))))))).........
+GCACACCGCAUCUUUGUGUGC
+((((((.........))))))
 > prueba31
-CAUGUUUGAGGGCUUAGGGGACUCCAACGGAGAGAGAAGUACCUCCCC
-.........((((((......(((.........))))))......)))
+AACCUGUAUCGCUACCAGGUU
+((((((.........))))))
 > prueba32
-GACGGCUCUCGGAGCACCGAGCAAAGUAGCGAGGCAACGCCCGAUUUUGAUGGGCGUCCUUAUGCUGUUCUAACUGAUGCUGCUCCG
-.........((((((.........((((((......((((((.........))))))......)))......)))......))))))
+CACUCGGAUUGUUGCCGAGUG
+((((((.........))))))
 > prueba33
-GAAACGUUCUCUCCCGUACAUAGCUUAGCAACCAUAUUUGUGUACUGAACACACCGAUAUUAAUGCUUUGCUUUCUAAUACGAA
-......(((......(((......((((((.........(((.........))).........))).........)))))))))
+AGCUUUGUCUUACUAAAAGCU
+((((((.........))))))
+> prueba34
+CACGAACGGUCUUCGUUCGUG
+((((((.........))))))
 > prueba35
-CGGCGCCCAUCUAUGCGUUGGGCUCAAGCGCCGGUUAGC
-(((((((((.........)))......))))))......
+AUAGAGCUCGACGACCUCUAU
+((((((.........))))))
+> prueba36
+UAUACCCAAGGCAGCGGUAUA
+((((((.........))))))
 > prueba37
-AUUCUGAUGCCACUCACCCUGGCCGAUGUCACAUACGUAUAAAGCGCGGAUUUAACUACAAUAUACGGUGGACAGGACAUCGAGCACCUAUGGGAGUCGCGACAU
-......(((((((((.........((((((......((((((.........))).........))).........)))))))))......))).........)))
+GUAUUACAGCGGCAAUAAUAC
+((((((.........))))))
 > prueba38
-GCAAACGCAUCCGCGGAGCUGCUAAGUCCUCUAAACACUGUUCUUCUCGCCCCGCGCAACCUCGGCUGCCUUGACCGA
-(((.........((((((......(((.........)))......)))......))).........))).........
+CCAAGCCGUUAGGACGCUUGG
+((((((.........))))))
 > prueba39
-CAUACCUAGACCAGUAUCUGACCGUGGGGUCGCUGGUUUAGCAAUGGGGUGUCCCUUCCCGGAAUCACAGUGUCAGACUGGGUUGGGACCAAUCCUUGAUUAACUCCGGCAUAAUAUUUCCGUUCACAGCCACCUGGUGCCCUAUUUCCAGUCUGAGGCGGGGGAUCCCGUUUCAGUGGAAGAGACCACAAACCGCACUGUCCAGCGGAGUGAGGAACCUCACGGUUCGGAGGUUCGCCAUGACUACUACUCAGAGGUUAUGGCGAGAUGCUACCG
-((((((((((((......(((......((((((((((((.........((((((......(((.........(((((((((......(((......((((((.........))).........))).........))).........))))))))).........))).........)))......)))))).........)))))).........)))))).........))).........))).........))).........)))......
+UCCAUUCUAUACAAUAAUGGA
+((((((.........))))))
 > prueba40
-AACCAACGAGGCGCCUAUCUAUUGGGCGCCGCUCUU
-.........((((((.........))))))......
+UAGAUCCUAAUUAUGGAUCUA
+((((((.........))))))
 > prueba41
-UACUCGAAUAGAUGCCAAUUUGACGAAAUGCAAUACAUGGUUGCGUCUGACUCGAUUGGCGCACGUAAAGUAUGCCAUAUUGCCAGAUGUGGAGCGCGCGUAACAACGCAUUUGCAUGUAGCCUUGUUGUGCAAGGCAUCUAUUCUGCUCCAGCGAGUA
-((((((((((((((((((.........(((((((((......((((((.........((((((.........)))......)))))).........)))))).........)))))).........)))......))))))))).........))))))
+UGGAGUGGGGUUGCUACUCCA
+((((((.........))))))
+> prueba42
+GAAUGAACAAAGCCUUCAUUC
+((((((.........))))))
 > prueba43
-UUGAAGCCAGGGCGCCACCUUGCCAGUGAAAUCUCUAGGUGAACAGCAGGCUACUGAAUCCGAGAUGAAAUUUCGUUCUCGGCCUGCCCGCGGCCGUGUGAGAUUCGAAGAUACAGAUUAGGCGCGCAA
-(((.........(((......(((.........(((......(((((((((.........(((.........)))......)))))).........))).........))).........)))))))))
+CCUUAUAGACUAUUAAUAAGG
+((((((.........))))))
 > prueba44
-GUAGGGAAAAUAUAC
-(((.........)))
+ACGCAAUGCGCCAGCUUGCGU
+((((((.........))))))
 > prueba45
-AGUAGGUGCCUGACUAACAUAUAA
-(((.........))).........
+GUCGAGUAAUUCAUUCUCGAC
+((((((.........))))))
+> prueba46
+GACUUUCCGCCUCCAAAAGUC
+((((((.........))))))
+> prueba47
+AUGGUUAGACCUACUAACCAU
+((((((.........))))))
 > prueba48
-UCGUGGUUAGUCCCGGUCUAA
-......(((.........)))
+UAUAACUCGUGCACGGUUAUA
+((((((.........))))))
 > prueba49
-CUUCGGUAUGUUACAAGGAUGCACCACGAACAUAUUCAGCCUUGUUUAGCUAAC
-.........((((((((((((.........)))......))))))......)))
+GAGUAAUCCAUAAUUUUACUC
+((((((.........))))))
 > prueba50
-UUGGAUCGGCCCAAAGACCAAAGCUGUUGUAUCUGGGCGGAUUGUAUACAUCGGUGGAAUACGUCGAGGGUCUCAAUUCCUCGAGUGGCGCCACCUCCACCGUAUUGUAUGCGCACAAUGGCAUUUAUCCAA
-((((((......(((.........(((.........(((.........(((((((((......((((((.........))))))......)))......)))......)))))))))......)))))))))
+GCUCCAGUCUUUCUAUGGAGC
+((((((.........))))))
+> prueba51
+CACGCCGGGGGCGUGGGCGUG
+((((((.........))))))
 > prueba52
-GAGUGGAGAUUCCCCUCACUAGAACUCCUGUAU
-.........(((.........))).........
+CAGUUCCGCCCCCACGAACUG
+((((((.........))))))
 > prueba53
-AACUUACAUUCUAUCAUAAGCAUGGACAACCUCUUGCAUGUUGUCUGAACAUAUUAACGUGGCGUUUCACGA
-((((((.........(((......((((((.........))))))......))))))......)))......
+UCAUGUAGAUCAUUGACAUGA
+((((((.........))))))
 > prueba54
-UUAUGGAAGCGAACCUUUCUCGAUCCAGCUUGCAGACCGGUGUCUUCUUUCUCUUGGAUCGAGCGUGGAACAUCGCUACCU
-.........(((......(((((((((......(((.........)))......))))))))).........)))......
+CACGUUAUCUCCAGUAACGUG
+((((((.........))))))
 > prueba55
-GUCAGGGAACACUCCUUUAUGUAAAUCCCCGAAUCUAUUAACCAGACGAGACUCUGCCACAGGCACCUCUUAAGAGGACGCAAUAGUCAGUUACGGCGGCGGACCAUUAGGCUCGGUAAUCCGCCGAUUCUGAAAGCGCUCCCACAGUAAAGAAUCCCUUCACUAUGGGUGCGCCCUCUCCGUGAAAAAAGAUCGGAAGAUUUACACGAGCCACAUUCCCACAGGGUGGACACU
-.........(((......((((((.........(((.........(((.........((((((......(((......((((((.........((((((......(((.........))))))))))))......))).........)))......))).........))).........)))......))).........))).........))).........)))......
+CCGGCCUUAGUUGACGGCCGG
+((((((.........))))))
 > prueba56
-CUUACACAGUCAGUAAGCACCCUUUAGUCACCCCAGAAGUCAGUUUCAGGUUCCCUGUGAAGUGGUAGUAACGAAGCUGGUUGACCAUCUUCCCUUCCCCUGCUGGUGCCGGGGAAGUGAAUUCACCUGUCAGGCAGG
-......((((((.........(((......((((((((((((((((((.........))).........))).........))).........)))......)))......)))))))))......))).........
+GAUAGGGUAUUCUGUCCUAUC
+((((((.........))))))
 > prueba57
-GUAUUAUAAAAUAGGAAGGAUAGACCUCCGACCUACGCCAUCAUG
-(((.........(((.........)))......))).........
+UGCUCCAUUGUGUGAGGAGCA
+((((((.........))))))
 > prueba58
-ACGGUUCCAUGGACGCCGGCAUCCGGAUUUACCUCUGUUCCUGUUUGCUAAAUUACUGCACUUGCGCAUAGAUAACCUUAUGGAUGUCGGAUCUGCUGG
-......(((.........((((((.........(((.........(((.........))).........))).........))).........))))))
+GAGCUCCUUUUCUGCGAGCUC
+((((((.........))))))
+> prueba59
+GCUCUGGAUCCAUCCCAGAGC
+((((((.........))))))
 > prueba60
-CCUAUUGCCGUGGAUUAUACCUUGCCGGCGCAGGGCACGUGCACUGCCUCGCUAUCAUCACUCGACCUCUGACGAGGCCCCACCAUGAGUGCACGCUAUGUCGCGGGUGCUCAACACUGAUGUCCUGGCUCCUCAAAA
-......((((((......(((......(((.........((((((((((((......(((.........))))))))).........))))))))).........)))......))).........))).........
+UGCUAUCAGCCUUCUAUAGCA
+((((((.........))))))
 > prueba61
-GUGCGACAGGUAUUUAGAUUACCCAUCGAAUAAUAC
-.........(((......(((.........))))))
+CUCUGCACCCGAUGAGCAGAG
+((((((.........))))))
 > prueba62
-ACUUAGUACAAAAGUAAUCCAUGG
-(((.........))).........
+CACGGGGGGUGCCUUCCCGUG
+((((((.........))))))
 > prueba63
-CGCAGGCUAGAACUCGCCAUAUUCGCCACG
-.........(((.........)))......
+CGUUUUUACUUUGGUAAAACG
+((((((.........))))))
 > prueba64
-UUAGAAGCAACGCGCGUCACGGACCAGGAUUAACCCUAUAUAGUCUGAGCCUAUGAUCACACCUUAAUCCUGGUCCGUGACUAGGAUUGCUUCUAA
-(((((((((......((((((((((((((((((......(((.........))).........))))))))))))))))))......)))))))))
+GACGACGGCAUUGAAGUCGUC
+((((((.........))))))
 > prueba65
-AGGCUACUAAUGACCGGUACGGCCGGUCGGAAGCAUUAG
-......(((((((((.........)))......))))))
+UAAGGAAGUUAUCAAUCCUUA
+((((((.........))))))
 > prueba66
-UUCGACCAGGGUCCUCGUCUG
-......(((.........)))
+ACAAACCCUCAGGGGGUUUGU
+((((((.........))))))
 > prueba67
-CAAACUAAUGAGCGCAAUUGUUUACGUGACAUCGCUCUGUGCGUGAGCCGCAGAACGGCCAGAUAACUCGGGGUGUCGUUG
-(((......(((.........((((((......(((.........)))......)))......)))))).........)))
+GGACCUCCUUCUUCUAGGUCC
+((((((.........))))))
 > prueba68
-AACGUAUGUAAGAACAGAGGGGCUAGGUUCGAAUGCAUUGAAGUAUUGCCCCCCCUUUCUUACGUUUACUUU
-((((((.........((((((......(((.........)))......)))......)))))))))......
+CGUUGACACCAUCACUCAACG
+((((((.........))))))
 > prueba69
-CGCUAGCUCGCCAUAUACCUGCAUGGCGCCCAUAGCGCUGGCGCCUAGAGACCCAUGUAUCGGGCGUAUCUAUCUAUCGCG
-((((((......(((......(((((((((.........)))))).........))).........))))))......)))
+CUCUCGUGGACGGUCCGAGAG
+((((((.........))))))
 > prueba70
-GUUUGAAGGUUCUCAGUAGGUAGAUCUUACCUAAGGACAUGAGAA
-.........(((((((((.........))).........))))))
+AAAAAGCAAGGUGGUCUUUUU
+((((((.........))))))
 > prueba71
-AUCGCCAUCCGGGAU
-(((.........)))
+UUAUCGGGUGGGGGGCGAUAA
+((((((.........))))))
 > prueba72
-CAAGCGCACCAAAAAAGGCCCAACGGAUGGGUAUUGGACACGGGUAAUUCCCAGUGGACUGAGCUCGAACCGUCGGAGUUCGUUGUACUCGGAGUCCCAGGGAGAGUACCUUUUUUGGUGAAAUGGGAC
-......(((((((((((((((......(((......(((.........(((.........((((((.........))).........)))))))))))))))......)))))))))))).........
+CUCGGUGUAAAACAUACCGAG
+((((((.........))))))
 > prueba73
-AGUCAUCCAGGGCCUAAGUGGAUAGCAUCUAUGACU
-(((((((((.........))).........))))))
+GGGAAAACUUUGUAGUUUCCC
+((((((.........))))))
 > prueba74
-GUAGCAAACUUCACUAGCGCUGAAGAGAGCAAU
-.........(((.........))).........
+CGGGAGUUGUGAGAGCUCCCG
+((((((.........))))))
 > prueba75
-GUCCGCAUUGAAGAGCUCAAUAUUCGUCUC
-......(((.........))).........
+GAAACUCCUCUGGUAAGUUUC
+((((((.........))))))
 > prueba76
-CCUAGGAUCCCACUUAUCGGUUCGAAGGCAAAUAGG
-(((.........(((.........)))......)))
+GGUCUGCAAUGCUCUCAGACC
+((((((.........))))))
 > prueba77
-ACUAGAUGCUUGGGAAUCUUUAAUCCGCGAAUGCCCUAUAUGACUUAGUGAGGCCCGUUCAUCGGCUUACCGUACUUGUCUUGAGUUGUGCCACCGCAGAGAAUUUGCCUUGUGGCCGCCCCCCACAUAGCCGACAAUUUAUGCGUCUGGAGAUCGCCCCAAGUACGGUGAGUUUAACGGGCCAGUCUUGAACAUAUUCAAUUAGUUAAAGCAUUGCAC
-......((((((.........(((......(((.........(((......((((((.........(((((((((((((((.........(((.........(((......(((.........))).........))).........))))))......)))))))))......))))))))))))......))))))))).........)))......
+GUGGUUUGUAGGAGCAACCAC
+((((((.........))))))
+> prueba78
+GAACCCUUGCGCUUCGGGUUC
+((((((.........))))))
 > prueba79
-AUGACGAUACGAGCUCGUUCGUCUCAU
-((((((.........)))......)))
+ACUGUAGCGCACAGAUACAGU
+((((((.........))))))
 > prueba80
-UGGUCGUCGACAGCUUAGGUUCACGGCGCAUGAGGGCUCGUCUCAUGCCUACGAUCGAGUCCA
-((((((.........(((.........((((((.........))))))))))))......)))
+UCAAUAGGGAGAGUAUAUUGA
+((((((.........))))))
 > prueba81
-UAUUACAGAAGGCAACUCCAACUUUUGAGAGACCAUGUAGGGCUGAUA
-((((((......(((.........))).........)))......)))
+AUUAAUGCGUCUUGGAUUAAU
+((((((.........))))))
+> prueba82
+AAGGGUUAGUACCUUACCCUU
+((((((.........))))))
 > prueba83
-UAUUGGAGCCAUAUA
-(((.........)))
+ACGUGCGUCAUGUUUGCACGU
+((((((.........))))))
 > prueba84
-CUAGCUUUUUGCGAAAUUGAGCAGCCUUGACCAUCGUUCGUGCACAGUGACCUAUAUCCUCGCACGGCGCGGAACCAAAUGGCCAUGCCAGAUGGCCCGCAAAGCGCGGAGCGUAGGUGAACAGCAAUAGUGAUCCCCACACACUCAAGGUUCUAGCAACUA
-(((.........(((.........((((((.........((((((.........(((((((((......(((.........(((.........))))))......)))......))).........)))))).........)))))))))))))))......
+UAGACACGAGAGCAAUGUCUA
+((((((.........))))))
 > prueba85
-GUAAUCUACGCUGGAAACACGAACGGACUCGCCGGUACACGUUUAGUGCUGACGGGCAUAGCCUGUGGAGAACUGGAGUCCGGGAUUUAUGUUUCCUUUAGAAGCUUGACCUUCGUA
-......(((((((((......(((((((((......((((((.........))).........))).........)))))).........))))))......))).........)))
+UGCGACGGUAGGGCGGUCGCA
+((((((.........))))))
 > prueba86
-AGGCAUUAGAUCGCGUUGAGUGAUCCUCAA
-.........(((.........)))......
+UUCUUCUAUCACCCCGAAGAA
+((((((.........))))))
+> prueba87
+GUCGACCGGCCCGACGUCGAC
+((((((.........))))))
 > prueba88
-UGAAACUCAAGGGGGAGGACGCCCGUAGCGAUCGGUAAUAGGGCCAACAUUCGCCCUUGUCAUGUUUCA
-((((((.........(((.........(((......(((.........)))))))))......))))))
+AUAAGACGUUUACACUCUUAU
+((((((.........))))))
 > prueba89
-ACAUUGUAAGUUUGACGUACUUUGGGCACGUCAGCAGGCAGAAACAAGUCCACG
-.........(((((((((.........)))))).........))).........
+CAUUAGCCCUCAAAUCUAAUG
+((((((.........))))))
+> prueba90
+ACAGGACCGAAAGGGUCCUGU
+((((((.........))))))
 > prueba91
-CUUCCUUUUAAUGUGAAAAUUGUCGACUAAACUAAAGGAUAGGUCAGGGUUUAAUCGCAGCAGCUCUGUGGACUGGACGGGAUCUCCCCGGGUCCGGAGUGAUCGUACUAGUCCGAUAUGGUCGCGGUAUAACAUUUAGGAGCCCUGCUGUCCUACCGCGACAUACUCCAUAUCCCGAGUCGAGAUUCGCGGACCGUUGAUAUUCUGACCCAGAUGAUCUCCUUUGUUCUGCUGCGAGACACUCCUUCCCUCUUUGACGUCAAACACAGUAAUAGGAAAAUCAUUAAGGAA
-.........(((......(((.........(((.........((((((.........((((((......((((((......(((.........(((......(((.........(((((((((((((((.........(((.........))))))))))))......))))))......)))......)))......))).........)))......)))......)))))).........))).........))).........)))))).........)))......
+UUUGCGACGGAUCGUCGCAAA
+((((((.........))))))
 > prueba92
-UCGUAUUUUUAUGUCUCCCGGUCCGACUGUCAACGA
-(((.........(((.........)))......)))
+GAGAUCGGGUUACCUGAUCUC
+((((((.........))))))
 > prueba93
-CAUAUUUGCUGCCCAUCAAGCAGGUGGGGCCGAAUCAUGGCUCCCUCU
-(((.........(((.........))).........))).........
+GUUCCUGCCAUACGCAGGAAC
+((((((.........))))))
 > prueba94
-GUACACCACCCAAGCCAGUAGCGUAGCUAUGUUUCAUUUCGAGUACUAUACAGCUCUAACAUCGAUAAACACACCCGCUCAGGAACAAAACCUUCCGGUCGUGCCGAUCACAUAAUAGCUUCGAUUAAAAAAUGACGCGCGGUUAACCGGUCUCUAUGGGUG
-......((((((......(((.........((((((((((((.........(((......(((.........(((......(((.........))))))......))).........))))))......)))))).........)))......)))))))))
+AAGGACCAGGAUAGCGUCCUU
+((((((.........))))))
 > prueba95
-UACAACGCGUGACGCCAGCGGACUGCGAGUCCCGUAGUGCAA
-(((.........(((.........)))......)))......
+UUACAACGCAUAUACUUGUAA
+((((((.........))))))
 > prueba96
-AUCAGUUGGCUUGGAAUCGGUCCCUCGCGAACCGAUCCA
-......(((......((((((.........)))))))))
+GGGUAGAGAGUACGGCUACCC
+((((((.........))))))
 > prueba97
-ACAAAUGAUAACUAUUGCGUUGAGCUAUGUAUUUAUGCCGCGUGGGUCUUUAGAAGGAGGCUGUGUGGUGAUAUUAUAACAGAAUAACCGCGGAUCUUCAAUGUCUUUCUGCCAGCUAGGCAGGGAGAAAAAGAUCCGCGGUUAAAUACAUGUAGAAUCACCACACAGGUUCAUCCUCCUACCACCUACUCUCCACGCGAAGCAAAUGUUAUCCUCGUUCGUCGGACAUGUCACAGC
-(((......(((.........(((......(((......((((((......((((((((((((((((((((((((.........((((((((((((.........((((((.........)))......)))))))))))))))))).........))))))))))))......)))))).........)))))))))......)))......)))))).........)))......
+ACGCGUGUGAGCGAUACGCGU
+((((((.........))))))
 > prueba98
-UAUUGGGAUAACCCUCAAAACAAUUACUAACUGCAAGUAAUUGUUGCCAAGACAAUC
-......((((((.........((((((.........))))))))).........)))
+AAUCCGCAACGCGCUCGGAUU
+((((((.........))))))
+> prueba99
+CCGAUCAUUACCGCGGAUCGG
+((((((.........))))))

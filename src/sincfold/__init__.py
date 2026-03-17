@@ -16,6 +16,9 @@ from sincfold.utils import write_ct, validate_file, ct2dot
 from sincfold.parser import parser
 from sincfold.utils import dot2png, ct2svg
 
+
+from torch.utils.tensorboard import SummaryWriter
+
 def main():
     
     args = parser()
@@ -43,7 +46,7 @@ def main():
     random.seed(42)
     np.random.seed(42)
 
-    if args.command == "train": 
+    if args.command == "train":
         train(args.train_file, config, args.out_path,  args.valid_file, args.j)
 
     if args.command == "test":
@@ -59,6 +62,10 @@ def train(train_file, config={}, out_path=None, valid_file=None, nworkers=2, ver
         out_path = f"results_{str(datetime.today()).replace(' ', '-')}/"
     else:
         out_path = out_path
+    
+    ########################## LOG INFO TO TENSORBOARD ##########################
+    writer = SummaryWriter(f"runs/{out_path}")
+    #############################################################################
 
     if verbose:
         print("Working on", out_path)
@@ -69,7 +76,10 @@ def train(train_file, config={}, out_path=None, valid_file=None, nworkers=2, ver
     if not os.path.isdir(out_path):
         os.makedirs(out_path)
     else:
-        raise ValueError(f"Output path {out_path} already exists")
+        # eliminate direcory and create from scratch
+        shutil.rmtree(out_path, ignore_errors=True)
+        os.makedirs(out_path)
+        #raise ValueError(f"Output path {out_path} already exists")
 
     if valid_file is not None:
         train_file = train_file
@@ -101,7 +111,15 @@ def train(train_file, config={}, out_path=None, valid_file=None, nworkers=2, ver
     )
 
     net = sincfold(train_len=len(train_loader), **config)
-    
+
+    ############## LOG INFO TO TENSORBOARD ##############
+    # examples = iter(train_loader)
+    # mini_batch = next(examples)
+    # print(mini_batch)
+    # writer.add_graph(net, mini_batch) # hacer reshape del input??
+    # writer.close()
+    #####################################################
+        
     best_f1, patience_counter = -1, 0
     patience = config["patience"] if "patience" in config else 30
     if verbose:
@@ -137,6 +155,17 @@ def train(train_file, config={}, out_path=None, valid_file=None, nworkers=2, ver
             f.flush()    
             if verbose:
                 print(msg)
+        
+        ######################### LOG INFO TO TENSORBOARD #########################
+        if (epoch + 1) % 100 == 0:
+            # print(f"epoch: {epoch + 1}/{n_epochs}, step: {i}/{n_total_steps}, loss: {loss.item():.4f}")
+
+            
+            writer.add_scalar('training loss', val_metrics["loss"], epoch+1)
+            writer.add_scalar('F1', val_metrics["f1"], epoch+1)
+            writer.add_scalar('F1 Post', val_metrics["f1_post"], epoch+1)
+            writer.close()
+        ###########################################################################
             
     # remove temporal files           
     shutil.rmtree(config["cache_path"], ignore_errors=True)
@@ -147,6 +176,10 @@ def train(train_file, config={}, out_path=None, valid_file=None, nworkers=2, ver
     tmp_file = os.path.join(out_path, "valid.csv")
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
+
+    ############### LOG INFO TO TENSORBOARD ###############    
+    writer.close()
+    #######################################################
     
 def test(test_file, model_weights=None, output_file=None, config={}, nworkers=2, verbose=True):
     test_file = test_file

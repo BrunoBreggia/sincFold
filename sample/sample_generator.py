@@ -1,5 +1,5 @@
 import numpy as np
-from sincfold.utils import bp2dot
+from sincfold.utils import bp2dot, dot2bp
 
 pairs = {'A': 'U',
          'U': 'A',
@@ -95,9 +95,11 @@ def create_mock_training_file(filename):
     with open(filename, 'w') as samples_file:
         print("id,sequence,base_pairs", file=samples_file, flush=True)
 
-        for i in range(200):
+        i = 0
+        for _ in range(1000):
             id, seq, pairs_array = rna_generator([f'prueba{i}', random_rna_tree_tandem(n=3)])
             if len(seq) < 300 and len(pairs_array) > 0:
+                i += 1
                 print(id, seq, f'"{pairs_array}"', sep=',', file=samples_file, flush=True)
 
 def create_mock_evaluation_file(filename):
@@ -110,11 +112,58 @@ def create_mock_evaluation_file(filename):
                 print(seq, file=samples_file, flush=True)
                 print(bp2dot(pairs_array, len(seq)), file=samples_file, flush=True)
 
+def create_rna_from_structure(structure):
+    """
+    Create fixed-structure RNA with random nucleotide content
+    """
+    rna = []
+    stack = []
+    for i in structure:
+        if i == ".":
+            rna.append(np.random.choice(list(pairs.keys())))
+        elif i == "(":
+            nt = np.random.choice(list(pairs.keys()))
+            rna.append(nt)
+            stack.append(pairs[nt])
+        else: # i == ")"
+            try:
+                rna.append(stack.pop())
+            except(IndexError) as e:
+                raise e("No coinciden cantidad de parentesis que abren con los que cierran")
+    if len(stack) != 0:
+        raise IndexError("No coinciden cantidad de parentesis que abren con los que cierran")
+    return "".join(rna)
+
+
+def create_simple_training_file(filename, dot):
+    with open(filename, 'w') as samples_file:
+        print("id,sequence,base_pairs", file=samples_file, flush=True)
+
+        for i in range(1000):
+            id = f"prueba{i}"
+            seq = create_rna_from_structure(dot)
+            pairs_array = dot2bp(dot)
+            print(id, seq, f'"{pairs_array}"', sep=',', file=samples_file, flush=True)
+
+def create_simple_testing_file(filename, dot):
+    with open(filename, 'w') as samples_file:
+        # FASTA file
+        for i in range(100):
+            id = f"prueba{i}"
+            seq = create_rna_from_structure(dot)
+            pairs_array = dot2bp(dot)
+            if len(seq) < 300 and len(pairs_array) > 0:
+                print(">", id, file=samples_file, flush=True)
+                print(seq, file=samples_file, flush=True)
+                print(bp2dot(pairs_array, len(seq)), file=samples_file, flush=True)
 
 
 if __name__ == '__main__':
-    # create_mock_training_file("sample/train_mock_k3.csv")
-    create_mock_evaluation_file("sample/test_mock_k3.fasta")
+    # dot1 = "......((((((((((((((((((.................................))))))))))))))))))......(((((((((............)))))))))..."
+    dot1 = "((((((.........))))))"
+    print(len(dot1))
+    create_simple_training_file("sample/train_mock_k3.csv", dot1)
+    create_simple_testing_file("sample/test_mock_k3.fasta", dot1)
 
     # random_rna = random_rna_tree_tandem(3)
     # print(random_rna)
@@ -124,4 +173,9 @@ if __name__ == '__main__':
     # print(pairs_list)
     # dot = bp2dot(pairs_list, len(seq))
     # print(dot)
-    
+
+    # dot = "......(((((((((............)))))))))..."
+    # rna = create_rna_from_structure(dot)
+    # print(rna)
+    # pairs_array = dot2bp(dot)
+    # print(pairs_array)
